@@ -1,22 +1,7 @@
-const CACHE_NAME = 'sg-tournaments-v2.0.0';
+const CACHE_NAME = 'sg-tournaments-v2.0.1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  // Add other pages you want to cache
-  '/signup.html',
-  '/main.html',
-  '/ceo.html',
-  '/coo.html',
-  '/boo.html',
-  '/roshi.html',
-  '/yt.html',
-  '/policy.html',
-  '/calculate.html',
-  '/profile.html',
-  '/tournament.html',
-  '/link.html',
-  '/goku.html'
+  './',
+  './index.html'
 ];
 
 // External resources to cache
@@ -67,10 +52,11 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
-  // Skip cross-origin requests
+  // Skip cross-origin requests except for our resources
   if (!event.request.url.startsWith(self.location.origin) && 
       !event.request.url.includes('ik.imagekit.io') &&
-      !event.request.url.includes('fonts.googleapis.com')) {
+      !event.request.url.includes('fonts.googleapis.com') &&
+      !event.request.url.includes('fonts.gstatic.com')) {
     return;
   }
 
@@ -102,27 +88,21 @@ self.addEventListener('fetch', (event) => {
           .catch(() => {
             // If both cache and network fail, show offline page
             if (event.request.destination === 'document') {
-              return caches.match('/index.html');
+              return caches.match('./index.html');
             }
           });
       })
   );
 });
 
-// Background sync for offline functionality
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'background-sync') {
-    console.log('Background sync triggered');
-    event.waitUntil(doBackgroundSync());
+// Handle updates
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
   }
 });
 
-async function doBackgroundSync() {
-  // Implement background sync logic here
-  console.log('Performing background sync...');
-}
-
-// Periodic update check
+// Periodic update check (triggered from main page)
 self.addEventListener('periodicsync', (event) => {
   if (event.tag === 'content-update') {
     console.log('Periodic sync for content update');
@@ -159,61 +139,3 @@ async function checkForUpdates() {
     console.log('Update check failed:', error);
   }
 }
-
-// Handle messages from the main thread
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-  
-  if (event.data && event.data.type === 'CHECK_FOR_UPDATES') {
-    checkForUpdates();
-  }
-});
-
-// Push notification handling
-self.addEventListener('push', (event) => {
-  if (!event.data) return;
-
-  const data = event.data.json();
-  const options = {
-    body: data.body || 'New update available from SG Tournaments!',
-    icon: 'https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png?updatedAt=1758480146212&ik-s=4f744f417100daea8710c3389638e583c2987985',
-    badge: 'https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png?updatedAt=1758480146212&ik-s=4f744f417100daea8710c3389638e583c2987985',
-    tag: 'sg-tournaments-update',
-    renotify: true,
-    actions: [
-      {
-        action: 'open',
-        title: 'Open App'
-      },
-      {
-        action: 'dismiss',
-        title: 'Dismiss'
-      }
-    ]
-  };
-
-  event.waitUntil(
-    self.registration.showNotification(data.title || 'SG Tournaments', options)
-  );
-});
-
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-
-  if (event.action === 'open') {
-    event.waitUntil(
-      self.clients.matchAll({ type: 'window' }).then((clientList) => {
-        for (const client of clientList) {
-          if (client.url === '/' && 'focus' in client) {
-            return client.focus();
-          }
-        }
-        if (self.clients.openWindow) {
-          return self.clients.openWindow('/');
-        }
-      })
-    );
-  }
-});
