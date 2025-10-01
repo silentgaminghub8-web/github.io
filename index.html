@@ -1267,7 +1267,8 @@
         // Service Worker Registration with Auto Update
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
+                // Use relative path for service worker
+                navigator.serviceWorker.register('./sw.js')
                     .then(function(registration) {
                         console.log('SW registered: ', registration);
                         
@@ -1291,12 +1292,8 @@
                     })
                     .catch(function(error) {
                         console.log('SW registration failed: ', error);
+                        // If service worker fails, the app should still work
                     });
-                
-                // Check if service worker is ready and page is controlled
-                navigator.serviceWorker.ready.then(() => {
-                    console.log('Service Worker is ready and controlling the page');
-                });
             });
         }
 
@@ -1317,34 +1314,38 @@
             }, 10000);
         }
 
-        // Install Prompt Handling
+        // Install Prompt Handling - Fixed logic
         let deferredPrompt;
         const installButton = document.getElementById('installButton');
         const installPopupButton = document.getElementById('installPopupButton');
         const installPopup = document.getElementById('installPopup');
         const popupOverlay = document.getElementById('popupOverlay');
         const popupClose = document.getElementById('popupClose');
+        let popupTimer;
 
         window.addEventListener('beforeinstallprompt', (e) => {
             console.log('beforeinstallprompt event fired');
             e.preventDefault();
             deferredPrompt = e;
             
-            // Show install popup after 3 seconds if app is not installed
-            setTimeout(() => {
-                if (deferredPrompt && !isPWAInstalled()) {
-                    showInstallPopup();
-                }
-            }, 3000);
-            
-            // Show floating install button
-            installButton.style.display = 'block';
+            // Only show popup if app is not installed
+            if (!isPWAInstalled()) {
+                // Show install popup after 3 seconds
+                popupTimer = setTimeout(() => {
+                    if (deferredPrompt) {
+                        showInstallPopup();
+                    }
+                }, 3000);
+                
+                // Show floating install button
+                installButton.style.display = 'block';
+            }
         });
 
         function showInstallPopup() {
-            // Check if user has previously dismissed the popup
+            // Check if user has previously dismissed the popup and app is not installed
             const popupDismissed = localStorage.getItem('installPopupDismissed');
-            if (!popupDismissed) {
+            if (!popupDismissed && !isPWAInstalled()) {
                 installPopup.style.display = 'block';
                 popupOverlay.style.display = 'block';
                 document.body.style.overflow = 'hidden';
@@ -1359,7 +1360,10 @@
         }
 
         function installApp() {
-            if (!deferredPrompt) return;
+            if (!deferredPrompt) {
+                console.log('No install prompt available');
+                return;
+            }
             
             deferredPrompt.prompt();
             deferredPrompt.userChoice.then((choiceResult) => {
@@ -1374,6 +1378,22 @@
             });
         }
 
+        // Check if app is already installed - Improved detection
+        function isPWAInstalled() {
+            return window.matchMedia('(display-mode: standalone)').matches || 
+                   window.navigator.standalone ||
+                   document.referrer.includes('android-app://');
+        }
+
+        // Hide install buttons if app is already installed
+        if (isPWAInstalled()) {
+            installButton.style.display = 'none';
+            // Also clear any pending popup timers
+            if (popupTimer) {
+                clearTimeout(popupTimer);
+            }
+        }
+
         // Event listeners for install buttons
         installButton.addEventListener('click', installApp);
         installPopupButton.addEventListener('click', installApp);
@@ -1386,17 +1406,6 @@
             installButton.style.display = 'none';
             deferredPrompt = null;
         });
-
-        // Check if app is already installed
-        function isPWAInstalled() {
-            return window.matchMedia('(display-mode: standalone)').matches || 
-                   window.navigator.standalone ||
-                   document.referrer.includes('android-app://');
-        }
-
-        if (isPWAInstalled()) {
-            installButton.style.display = 'none';
-        }
 
         // Background Effects
         function createParticles() {
