@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SILENT GAMERS - Premium Gaming Experience</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#FF6600">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SilentGamers">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#FF6600">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="application-name" content="SILENT GAMERS">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        } 
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            background: #000000;
+        } 
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #FFFFFF;
+            line-height: 1.6;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Install Popup Styles */
+        #installPopup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1a1a, #000000);
+            border: 3px solid #FF6600;
+            border-radius: 20px;
+            padding: 30px;
+            z-index: 10000;
+            box-shadow: 0 0 50px rgba(255, 102, 0, 0.5);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            display: none;
+            animation: popupAppear 0.5s ease-out;
+        }
+
+        @keyframes popupAppear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .popup-content {
+            position: relative;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background: #FF6600;
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .popup-close:hover {
+            background: #FF4500;
+            transform: scale(1.1);
+        }
+
+        .popup-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #FFD700;
+        }
+
+        .popup-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .popup-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: #FFD700;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .popup-text {
+            margin-bottom: 25px;
+            color: #cccccc;
+            font-size: 0.95rem;
+        }
+
+        #installPopupButton {
+            background: linear-gradient(135deg, #FF6600, #FFD700);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+        }
+
+        #installPopupButton:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.7);
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: none;
+        }
+
+        /* Install Button Styles */
+        #installButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #FF6600, #FFD700);
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.5);
+            z-index: 10000;
+            transition: all 0.3s ease;
+            display: none;
+            animation: pulse 2s infinite;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 102, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 102, 0, 0);
+            }
+        }
+
+        #installButton:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.7);
+        }
+
+        /* Update Notification */
+        #updateNotification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #FF6600, #FF4500);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 20px rgba(255, 102, 0, 0.5);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        #updateNotification button {
+            background: white;
+            color: #FF6600;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #updateNotification button:hover {
+            background: #FFD700;
+            transform: scale(1.05);
+        }
+
+        /* Golden Glowing Headline */
+        .golden-headline {
+            text-align: center;
+            margin: 20px 0 30px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .golden-headline h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 3.5rem;
+            color: #FFD700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            animation: goldenGlow 3s infinite alternate;
+            margin-bottom: 10px;
+        }
+
+        .golden-headline .subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            color: #FF6600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes goldenGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.7), 0 0 20px rgba(255, 102, 0, 0.3);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 30px rgba(255, 102, 0, 0.5), 0 0 40px rgba(255, 102, 0, 0.2);
+            }
+        }
+
+        /* Main Navigation Buttons */
+        .main-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+        }
+
+        .nav-button {
+            display: block;
+            background: linear-gradient(135deg, #FF6600, #FFD700);
+            color: #000;
+            text-decoration: none;
+            padding: 18px 30px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid transparent;
+        }
+
+        .nav-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 102, 0, 0.7);
+            border-color: #FFD700;
+        }
+
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-button:hover::before {
+            left: 100%;
+        }
+
+        /* Background Effects */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255,102,0,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-20px) translateX(10px);
+            }
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(28, 28, 28, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            border-bottom: 2px solid #FF6600;
+        } 
+
+        .logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        } 
+
+        .logo img {
+            height: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.7));
+        } 
+
+        .logo:hover img {
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9));
+            transform: scale(1.05);
+        } 
+
+        .header-title {
+            text-align: center;
+            flex-grow: 1;
+        } 
+
+        .header-title h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            color: #FFFFFF;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 102, 0, 0.7);
+            animation: titleGlow 3s infinite alternate;
+        } 
+
+        @keyframes titleGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 102, 0, 0.7);
+            }
+            100% {
+                text-shadow: 0 0 15px rgba(255, 215, 0, 0.9), 0 0 20px rgba(255, 102, 0, 0.5);
+            }
+        } 
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 5px;
+        } 
+
+        .menu {
+            display: flex;
+            list-style: none;
+        } 
+
+        .menu li {
+            margin-left: 20px;
+        } 
+
+        .menu a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        } 
+
+        .menu a:hover {
+            color: #FF6600;
+        } 
+
+        .menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #FFD700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+        } 
+
+        .menu a:hover::after {
+            width: 80%;
+        } 
+
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transform: translateX(-100%);
+            transition: transform 0.6s ease-out;
+        } 
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        } 
+
+        .mobile-menu .menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 10px;
+        } 
+
+        .mobile-menu ul {
+            list-style: none;
+            text-align: center;
+            width: 100%;
+        } 
+
+        .mobile-menu li {
+            margin: 20px 0;
+        } 
+
+        .mobile-menu a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            display: block;
+            transition: all 0.3s ease;
+            position: relative;
+        } 
+
+        .mobile-menu a:hover {
+            color: #FF6600;
+        } 
+
+        .mobile-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #FFD700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+        } 
+
+        .mobile-menu a:hover::after {
+            width: 80%;
+        } 
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1 0 auto;
+        } 
+
+        .gif-section {
+            text-align: center;
+            margin: 30px 0;
+            animation: fadeInUp 1s ease-out;
+        } 
+
+        .gif-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(255, 102, 0, 0.3);
+            border: 2px solid #FF6600;
+        } 
+
+        .headline {
+            text-align: center;
+            margin: 50px 0 30px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        } 
+
+        .headline h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 3rem;
+            color: #FFFFFF;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
+        } 
+
+        .headline h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6600, #FFD700);
+            border-radius: 2px;
+        } 
+
+        /* Facilities Grid */
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        } 
+
+        .facility-card {
+            background: rgba(28, 28, 28, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            border: 1px solid #333;
+        } 
+
+        .facility-card:nth-child(1) { animation-delay: 0.3s; }
+        .facility-card:nth-child(2) { animation-delay: 0.4s; }
+        .facility-card:nth-child(3) { animation-delay: 0.5s; }
+        .facility-card:nth-child(4) { animation-delay: 0.6s; } 
+
+        .facility-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 102, 0, 0.3);
+            border-color: #FF6600;
+        } 
+
+        .facility-image {
+            position: relative;
+            overflow: hidden;
+            height: 250px;
+        } 
+
+        .facility-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        } 
+
+        .facility-card:hover .facility-image img {
+            transform: scale(1.05);
+        } 
+
+        .facility-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.7));
+            z-index: 1;
+        } 
+
+        .facility-title {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #FFFFFF;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        } 
+
+        .facility-content {
+            padding: 20px;
+            text-align: center;
+        } 
+
+        .checkout-btn {
+            display: inline-block;
+            background: #FF6600;
+            color: #FFFFFF;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        } 
+
+        .checkout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        } 
+
+        .checkout-btn:hover {
+            background: linear-gradient(90deg, #FF6600, #FF4500);
+            box-shadow: 0 6px 15px rgba(255, 102, 0, 0.5);
+            transform: translateY(-3px);
+            border-color: #FFD700;
+        } 
+
+        .checkout-btn:hover::before {
+            left: 100%;
+        } 
+
+        /* Solo Facility */
+        .solo-facility {
+            text-align: center;
+            margin: 60px 0;
+            animation: fadeInUp 1s ease-out 0.7s both;
+        } 
+
+        .solo-card {
+            background: rgba(28, 28, 28, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #333;
+        } 
+
+        .solo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(255, 102, 0, 0.3);
+            border-color: #FF6600;
+        } 
+
+        .solo-image {
+            height: 300px;
+            overflow: hidden;
+        } 
+
+        .solo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        } 
+
+        .solo-card:hover .solo-image img {
+            transform: scale(1.05);
+        } 
+
+        .solo-content {
+            padding: 25px;
+        } 
+
+        /* Special Note Section */
+        .special-note {
+            margin: 80px 0;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        } 
+
+        .special-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            animation: float 6s ease-in-out infinite;
+        } 
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        } 
+
+        .note-container {
+            background: linear-gradient(135deg, #1C1C1C, #000000);
+            color: #FFFFFF;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #FF6600;
+        } 
+
+        .note-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 102, 0, 0.1), transparent);
+            animation: shine 3s infinite;
+            z-index: 0;
+        } 
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        } 
+
+        .note-content {
+            position: relative;
+            z-index: 1;
+        } 
+
+        .note-content h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #FF6600, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+        } 
+
+        .note-content p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        } 
+
+        .special-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #FF6600, #FF4500);
+            color: #FFFFFF;
+            padding: 15px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        } 
+
+        .special-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        } 
+
+        .special-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 102, 0, 0.6);
+            border-color: #FFD700;
+        } 
+
+        .special-btn:hover::after {
+            transform: translateX(100%);
+        } 
+
+        /* Footer Styles */
+        footer {
+            background-color: #000000;
+            color: #FFFFFF;
+            padding: 30px 5%;
+            text-align: center;
+            border-top: 3px solid #FFD700;
+            flex-shrink: 0;
+            margin-top: 50px;
+        } 
+
+        .social-logos {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        } 
+
+        .social-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        } 
+
+        .instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.7);
+        } 
+
+        .youtube {
+            background: #FF0000;
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.7);
+        } 
+
+        .social-logo:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
+        } 
+
+        .social-logo svg {
+            width: 60%;
+            height: 60%;
+        } 
+
+        .instagram svg path {
+            fill: #FFFFFF;
+        } 
+
+        .youtube svg path {
+            fill: #FFFFFF;
+        } 
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        } 
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        } 
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            } 
+
+            .menu {
+                display: none;
+            } 
+
+            .mobile-menu {
+                display: flex;
+            } 
+
+            .header-title h1 {
+                font-size: 1.4rem;
+            } 
+
+            .headline h2 {
+                font-size: 2.2rem;
+            } 
+
+            .facilities-grid {
+                grid-template-columns: 1fr;
+            } 
+
+            .note-content h3 {
+                font-size: 2rem;
+            }
+
+            .golden-headline h1 {
+                font-size: 2.5rem;
+            }
+
+            .main-nav {
+                padding: 0 15px;
+            }
+
+            .nav-button {
+                padding: 15px 25px;
+                font-size: 1rem;
+            }
+
+            #installButton {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 0.8rem;
+            }
+
+            #installPopup {
+                padding: 20px;
+                max-width: 350px;
+            }
+
+            .popup-title {
+                font-size: 1.5rem;
+            }
+        } 
+
+        /* Prevent zooming but allow scrolling */
+        body {
+            touch-action: pan-y;
+            -webkit-user-select: none;
+            user-select: none;
+        } 
+
+        /* Enable scrolling for content */
+        .container {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Offline Message */
+        #offlineMessage {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #FF6600;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            z-index: 10001;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #333;
+            border-top: 3px solid #FF6600;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Install Popup -->
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div id="installPopup">
+        <div class="popup-content">
+            <button class="popup-close" id="popupClose">×</button>
+            <div class="popup-logo">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png?updatedAt=1758480146212&ik-s=4f744f417100daea8710c3389638e583c2987985" alt="SG Tournaments Logo">
+            </div>
+            <h2 class="popup-title">SG Tournaments</h2>
+            <p class="popup-text">Install our app for faster access, offline functionality, and better gaming experience!</p>
+            <button id="installPopupButton">📱 Install App</button>
+        </div>
+    </div>
+
+    <!-- Update Notification -->
+    <div id="updateNotification">
+        <span>New version available!</span>
+        <button id="updateButton">Update Now</button>
+    </div>
+
+    <!-- Offline Message -->
+    <div id="offlineMessage">
+        You're offline. Please reconnect to continue playing with SILENT GAMERS.
+    </div>
+
+    <!-- Background Effects -->
+    <div class="bg-effects" id="bgEffects"></div>
+
+    <!-- Install Button -->
+    <button id="installButton">📱 Install App</button>
+
+    <!-- Header -->
+    <header>
+        <div class="logo" onclick="window.location.href='index.html'">
+            <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png?updatedAt=1758480146212&ik-s=4f744f417100daea8710c3389638e583c2987985" alt="SILENT GAMERS Logo">
+        </div>
+        <div class="header-title">
+            <h1>SILENT GAMERS</h1>
+        </div>
+        <button class="menu-toggle">☰</button>
+        <ul class="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+            <li><a href="main.html">Log In</a></li>
+            <li><a href="ceo.html">CEO</a></li>
+            <li><a href="coo.html">COO</a></li>
+            <li><a href="boo.html">Anti-Hacker</a></li>
+            <li><a href="roshi.html">Tournament Management</a></li>
+            <li><a href="yt.html">YouTube Policy</a></li>
+            <li><a href="policy.html">Privacy Policy</a></li>
+            <li><a href="calculate.html">Prizepool Calculator</a></li>
+        </ul>
+    </header> 
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="menu-close">×</button>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+            <li><a href="main.html">Log In</a></li>
+            <li><a href="ceo.html">CEO</a></li>
+            <li><a href="coo.html">COO</a></li>
+            <li><a href="boo.html">Anti-Hacker</a></li>
+            <li><a href="roshi.html">Tournament Management</a></li>
+            <li><a href="yt.html">YouTube Policy</a></li>
+            <li><a href="policy.html">Privacy Policy</a></li>
+            <li><a href="calculate.html">Prizepool Calculator</a></li>
+        </ul>
+    </div> 
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Golden Headline -->
+        <section class="golden-headline">
+            <h1>SILENT GAMERS</h1>
+            <div class="subtitle">Premium Gaming Experience</div>
+        </section>
+
+        <!-- Main Navigation Buttons -->
+        <div class="main-nav">
+            <a href="profile.html" class="nav-button">🎮 Profile Dashboard</a>
+            <a href="tournament.html" class="nav-button">🏆 All Tournaments</a>
+            <a href="link.html" class="nav-button">🔗 Start Links</a>
+        </div>
+
+        <!-- GIF Section -->
+        <section class="gif-section">
+            <img src="https://ik.imagekit.io/silentgamers/logo?updatedAt=1759325329840&ik-s=187e5d55268ffe33c83cef44eb12c5f9dc086cff" alt="SILENT GAMERS Animation">
+        </section> 
+
+        <!-- Facilities Headline -->
+        <section class="headline">
+            <h2>Facilities</h2>
+        </section> 
+
+        <!-- Facilities Grid - First Pair -->
+        <div class="facilities-grid">
+            <div class="facility-card">
+                <div class="facility-image">
+                    <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-23_05-35-36-905.jpg?updatedAt=1758585972484&ik-s=501e4b88eeb6d5cead71bcd478e25e634973d3c8" alt="CEO">
+                    <h3 class="facility-title">CEO</h3>
+                </div>
+                <div class="facility-content">
+                    <a href="ceo.html" class="checkout-btn">Check Out</a>
+                </div>
+            </div> 
+
+            <div class="facility-card">
+                <div class="facility-image">
+                    <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-23_05-16-07-573.jpg?updatedAt=1758584798495&ik-s=edc43a9e32ff2f3f58c4589fbab6324ae7eafb74" alt="COO">
+                    <h3 class="facility-title">COO</h3>
+                </div>
+                <div class="facility-content">
+                    <a href="coo.html" class="checkout-btn">Check Out</a>
+                </div>
+            </div>
+        </div> 
+
+        <!-- Facilities Grid - Second Pair -->
+        <div class="facilities-grid">
+            <div class="facility-card">
+                <div class="facility-image">
+                    <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-23_05-39-03-486.jpg?updatedAt=1758586169391&ik-s=775f84c60d85d686a8d6fd56009ce954aa5337f2" alt="Anti-Hacker">
+                    <h3 class="facility-title">Anti-Hacker</h3>
+                </div>
+                <div class="facility-content">
+                    <a href="boo.html" class="checkout-btn">Check Out</a>
+                </div>
+            </div> 
+
+            <div class="facility-card">
+                <div class="facility-image">
+                    <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-23_05-43-15-925.jpg?updatedAt=1758586431562&ik-s=4aaacc07c63e05fa71c74405c31c0a1ffb925a77" alt="Tournament Management">
+                    <h3 class="facility-title">Management</h3>
+                </div>
+                <div class="facility-content">
+                    <a href="roshi.html" class="checkout-btn">Check Out</a>
+                </div>
+            </div>
+        </div> 
+
+        <!-- Solo Facility -->
+        <section class="solo-facility">
+            <div class="solo-card">
+                <div class="solo-image">
+                    <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-23_09-25-19-245.jpg?updatedAt=1758599755483&ik-s=902240fb8ca8950869e36016cc8b9f1ddf45930c" alt="Special Facility">
+                </div>
+                <div class="solo-content">
+                    <a href="goku.html" class="checkout-btn">Check Out</a>
+                </div>
+            </div>
+        </section> 
+
+        <!-- Special Note Section -->
+        <section class="special-note">
+            <div class="note-container">
+                <div class="note-content">
+                    <h3>Start Your Tournament</h3>
+                    <p>For password check gmail after sign in</p>
+                    <a href="main.html" class="special-btn">START TOURNAMENT</a>
+                </div>
+            </div>
+        </section>
+    </div> 
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-logos">
+            <a href="https://www.instagram.com/silent.gamers?igsh=MWN6bGdsdzhyb3Nicw==" class="social-logo instagram">
+                <svg viewBox="0 0 448 512">
+                    <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.6 339 256 287.7 141 224.1 141zm0 189.6-41.1 0-74.6-33.5-74.6-74.6s33.5-74.6 74.6-74.6 74.6 33.5 746 74.6-33.5 74.6-746 74.6zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-32.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 3.7-67.6 9.9-93.9 36.1s-33.9 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s 58 32.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 32.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zm-32.7 176c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5 9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+                </svg>
+            </a>
+            <a href="https://youtube.com/@silentgaminghub1?si=I5kKezgts9brivCW" class="social-logo youtube">
+                <svg viewBox="0 0 576 512">
+                    <path d="M64 340c-11.8 5.4-23.9 8.5-35.6 11.7C10.5 362.8 0 350.9 0 336V176c0-14.9 10.5-26.8 28.4-31.3C40.1 141.5 52.3 144.6 64 150c213.5 97.4 339 129.7 345 131.1 5.8 1.5 9.5 6.2 9.5 12.2 0 6.8-3.7 10.8-9.5 12.2-6.6 1.5-131.5 33.6-345 131.1zm432-164c0 6.8-3.7 10.8-9.5 12.2-6.6 1.5-131.5 33.6-345 131.1-11.8 5.4-23.9 8.5-35.6 11.7-17.9 4.5-28.4 16.6-28.4 31.7V336c0 14.9 10.5 26.8 28.4 31.3 11.8 3.2 23.9 6.4 35.6 11.7 213.5 97.4 339 129.7 345 131.1 5.8 1.5 9.5 6.2 9.5 12.2 0 6.8-3.7 10.8-9.5 12.2-6.6 1.5-131.5 33.6-345 131.1-11.8 5.4-23.9 8.5-35.6 11.7-17.9 4.5-28.4 16.6-28.4 31.7V476c0 14.9 10.5 26.8 28.4 31.3 11.8 3.2 23.9 6.4 35.6 11.7 213.5 97.4 339 129.7 345 131.1 5.8 1.5 9.5 6.2 9.5 12.2 0 6.8-3.7 10.8-9.5 12.2-6.6 1.5-131.5 33.6-345 131.1-11.8 5.4-23.9 8.5-35.6 11.7-17.9 4.5-28.4 16.6-28.4 31.7V176c0-14.9 10.5-26.8 28.4-31.3 11.8-3.2 23.9-6.4 35.6-11.7 213.5-97.4 339-129.7 345-131.1 5.8-1.5 9.5-6.2 9.5-12.2 0-6.8-3.7-10.8-9.5-12.2-6.6-1.5-131.5-33.6-345-131.1-11.8-5.4-23.9-8.5-35.6-11.7-17.9-4.5-28.4-16.6-28.4-31.7v160z"/>
+                </svg>
+            </a>
+        </div>
+        <p class="copyright">© 2025 SILENT GAMERS. All rights reserved.</p>
+    </footer> 
+
+    <script>
+        // Service Worker Registration with Auto Update
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('SW registered: ', registration);
+                        
+                        // Check for updates every hour
+                        setInterval(() => {
+                            registration.update();
+                        }, 60 * 60 * 1000);
+                        
+                        // Listen for updates
+                        registration.addEventListener('updatefound', () => {
+                            console.log('New service worker found...');
+                            const newWorker = registration.installing;
+                            
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('New content available, showing update notification');
+                                    showUpdateNotification();
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('SW registration failed: ', error);
+                    });
+                
+                // Check if service worker is ready and page is controlled
+                navigator.serviceWorker.ready.then(() => {
+                    console.log('Service Worker is ready and controlling the page');
+                });
+            });
+        }
+
+        // Update Notification
+        function showUpdateNotification() {
+            const updateNotification = document.getElementById('updateNotification');
+            const updateButton = document.getElementById('updateButton');
+            
+            updateNotification.style.display = 'flex';
+            
+            updateButton.addEventListener('click', () => {
+                window.location.reload();
+            });
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                updateNotification.style.display = 'none';
+            }, 10000);
+        }
+
+        // Install Prompt Handling
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+        const installPopupButton = document.getElementById('installPopupButton');
+        const installPopup = document.getElementById('installPopup');
+        const popupOverlay = document.getElementById('popupOverlay');
+        const popupClose = document.getElementById('popupClose');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('beforeinstallprompt event fired');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install popup after 3 seconds if app is not installed
+            setTimeout(() => {
+                if (deferredPrompt && !isPWAInstalled()) {
+                    showInstallPopup();
+                }
+            }, 3000);
+            
+            // Show floating install button
+            installButton.style.display = 'block';
+        });
+
+        function showInstallPopup() {
+            // Check if user has previously dismissed the popup
+            const popupDismissed = localStorage.getItem('installPopupDismissed');
+            if (!popupDismissed) {
+                installPopup.style.display = 'block';
+                popupOverlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function hideInstallPopup() {
+            installPopup.style.display = 'none';
+            popupOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            localStorage.setItem('installPopupDismissed', 'true');
+        }
+
+        function installApp() {
+            if (!deferredPrompt) return;
+            
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                    hideInstallPopup();
+                    installButton.style.display = 'none';
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                deferredPrompt = null;
+            });
+        }
+
+        // Event listeners for install buttons
+        installButton.addEventListener('click', installApp);
+        installPopupButton.addEventListener('click', installApp);
+        popupClose.addEventListener('click', hideInstallPopup);
+        popupOverlay.addEventListener('click', hideInstallPopup);
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            hideInstallPopup();
+            installButton.style.display = 'none';
+            deferredPrompt = null;
+        });
+
+        // Check if app is already installed
+        function isPWAInstalled() {
+            return window.matchMedia('(display-mode: standalone)').matches || 
+                   window.navigator.standalone ||
+                   document.referrer.includes('android-app://');
+        }
+
+        if (isPWAInstalled()) {
+            installButton.style.display = 'none';
+        }
+
+        // Background Effects
+        function createParticles() {
+            const bgEffects = document.getElementById('bgEffects');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 100 + 50;
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}%`;
+                particle.style.top = `${top}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                bgEffects.appendChild(particle);
+            }
+        }
+
+        // Offline/Online Detection
+        window.addEventListener('online', function() {
+            document.getElementById('offlineMessage').style.display = 'none';
+        });
+
+        window.addEventListener('offline', function() {
+            document.getElementById('offlineMessage').style.display = 'block';
+        });
+
+        if (!navigator.onLine) {
+            document.getElementById('offlineMessage').style.display = 'block';
+        }
+
+        // Mobile menu functionality
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }); 
+
+        document.querySelector('.menu-close').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }); 
+
+        document.querySelectorAll('.mobile-menu a').forEach(function(item) {
+            item.addEventListener('click', function() {
+                document.querySelector('.mobile-menu').classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        }); 
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (mobileMenu.classList.contains('active') && 
+                !mobileMenu.contains(event.target) && 
+                !menuToggle.contains(event.target)) {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }); 
+
+        // Loading screen
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }, 500);
+            }, 1000);
+            
+            createParticles();
+        });
+
+        // Periodic update check (every 4 hours)
+        setInterval(() => {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.ready.then(registration => {
+                    registration.update();
+                });
+            }
+        }, 4 * 60 * 60 * 1000);
+
+        // Debug info
+        console.log('PWA Status:', {
+            serviceWorker: 'serviceWorker' in navigator,
+            beforeInstallPrompt: !!deferredPrompt,
+            isInstalled: isPWAInstalled(),
+            displayMode: window.matchMedia('(display-mode: standalone)').matches ? 'standalone' : 'browser'
+        });
+    </script>
+</body>
+</html>
