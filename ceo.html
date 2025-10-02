@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CEO - Silent Gamers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@800;900&family=Georgia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --orange: #FF6600;
+            --gold: #FFD700;
+            --darkGrey: #1C1C1C;
+            --lightGrey: #F4F4F6;
+            --warmRed: #FF4500;
+            --platinum: #E5E4E2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background-color: var(--white);
+            color: var(--darkGrey);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: pan-x pan-y; /* Prevent zoom gestures */
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--darkGrey);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+        }
+        
+        .logo img {
+            height: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .logo img:hover {
+            filter: drop-shadow(0 0 5px var(--orange));
+        }
+        
+        .title {
+            flex: 2;
+            text-align: center;
+        }
+        
+        .title h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--orange);
+        }
+        
+        .menu-toggle {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            cursor: pointer;
+        }
+        
+        .menu-toggle i {
+            font-size: 1.8rem;
+            color: var(--white);
+            transition: color 0.3s;
+        }
+        
+        .menu-toggle:hover i {
+            color: var(--orange);
+        }
+        
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2001;
+            display: none;
+            animation: slideInLeft 0.6s ease-in-out;
+        }
+        
+        .menu-content {
+            padding: 80px 30px 30px;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: var(--white);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .menu-close:hover {
+            color: var(--orange);
+        }
+        
+        .menu-items {
+            list-style: none;
+        }
+        
+        .menu-items li {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInLeft 0.5s ease forwards;
+        }
+        
+        .menu-items li:nth-child(1) { animation-delay: 0.1s; }
+        .menu-items li:nth-child(2) { animation-delay: 0.2s; }
+        .menu-items li:nth-child(3) { animation-delay: 0.3s; }
+        .menu-items li:nth-child(4) { animation-delay: 0.4s; }
+        .menu-items li:nth-child(5) { animation-delay: 0.5s; }
+        .menu-items li:nth-child(6) { animation-delay: 0.6s; }
+        .menu-items li:nth-child(7) { animation-delay: 0.7s; }
+        .menu-items li:nth-child(8) { animation-delay: 0.8s; }
+        .menu-items li:nth-child(9) { animation-delay: 0.9s; }
+        .menu-items li:nth-child(10) { animation-delay: 1.0s; }
+        
+        .menu-items a {
+            display: block;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.4rem;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .menu-items a:hover {
+            color: var(--orange);
+            padding-left: 10px;
+        }
+        
+        /* Main Content Styles */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .section:nth-child(1) { animation-delay: 0.2s; }
+        .section:nth-child(2) { animation-delay: 0.4s; }
+        .section:nth-child(3) { animation-delay: 0.6s; }
+        .section:nth-child(4) { animation-delay: 0.8s; }
+        .section:nth-child(5) { animation-delay: 1.0s; }
+        .section:nth-child(6) { animation-delay: 1.2s; }
+        .section:nth-child(7) { animation-delay: 1.4s; }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--black);
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--orange), var(--gold));
+        }
+        
+        .image-container {
+            position: relative;
+            margin: 30px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), 0 0 20px rgba(255, 102, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .image-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 102, 0, 0.4);
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+            object-fit: cover; /* Ensure images fit properly */
+        }
+        
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        .image-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--gold);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .image-container:hover .image-frame {
+            opacity: 1;
+        }
+        
+        .note-block {
+            background-color: var(--lightGrey);
+            padding: 25px;
+            border-left: 5px solid var(--orange);
+            margin: 30px 0;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .note-block p {
+            margin-bottom: 15px;
+        }
+        
+        .note-block p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--orange);
+            color: var(--white);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, var(--orange), var(--warmRed));
+            color: var(--white);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 102, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--black);
+            color: var(--orange);
+            border: 2px solid var(--gold);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(to right, var(--black), #333);
+            color: var(--orange);
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--darkGrey);
+            transition: color 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: var(--orange);
+        }
+        
+        .modal-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--black);
+            border-bottom: 2px solid var(--orange);
+            padding-bottom: 10px;
+        }
+        
+        .modal-text {
+            line-height: 1.6;
+        }
+        
+        /* Special Group Section */
+        .special-group {
+            background: linear-gradient(135deg, var(--orange), var(--gold));
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .special-group::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 10s linear infinite;
+        }
+        
+        .special-group h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--white);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+        
+        .special-group p {
+            font-size: 1.2rem;
+            color: var(--white);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .social-logo {
+            display: inline-block;
+            margin: 20px 10px;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .social-logo img {
+            height: 40px;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s;
+        }
+        
+        .social-logo:hover img {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px var(--gold));
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 3px solid var(--gold);
+        }
+        
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--orange);
+            color: var(--white);
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .social-icon:hover {
+            background: linear-gradient(to right, var(--orange), var(--warmRed));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 102, 0, 0.5);
+        }
+        
+        .footer-text {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 10px 15px;
+            }
+            
+            .title h1 {
+                font-size: 1.4rem;
+            }
+            
+            .logo img {
+                height: 40px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .special-group h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title h1 {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .note-block {
+                padding: 15px;
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png?updatedAt=1758480146212&ik-s=4f744f417100daea8710c3389638e583c2987985" alt="Silent Gamers Logo">
+                </a>
+            </div>
+            <div class="title">
+                <h1>CEO</h1>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay">
+        <div class="menu-close">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="menu-content">
+            <ul class="menu-items">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="signin.html">Sign Up</a></li>
+                <li><a href="main.html">Log In</a></li>
+                <li><a href="ceo.html">CEO</a></li>
+                <li><a href="coo.html">COO</a></li>
+                <li><a href="boo.html">Anti-Hacker</a></li>
+                <li><a href="roshi.html">Tournament Management</a></li>
+                <li><a href="yt.html">YouTube Policy</a></li>
+                <li><a href="policy.html">Privacy Policy</a></li>
+                <li><a href="calculate.html">Prizepool Calculator</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- CEO Introduction Section -->
+        <section class="section">
+            <h2 class="section-title">Ujjawal Malik</h2>
+            <div class="image-container">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-18_23-29-48-120.jpg?updatedAt=1758219956149&ik-s=5462f428ee0787efbef9f514b6cbddba19ec22ba" alt="Ujjawal Malik">
+                <div class="image-frame"></div>
+            </div>
+            <div class="note-block">
+                <p><strong>Name:</strong> Ujjawal Malik</p>
+                <p><strong>Nickname:</strong> Raj</p>
+                <p><strong>Qualification:</strong> Graduated, ITI</p>
+                <p>मैं एक simple इंसान हूँ जिसने अपने सपनों को हकीकत बनाने के लिए मेहनत शुरू की। पढ़ाई के साथ-साथ मैंने technology और gaming में अपना interest बनाया और धीरे-धीरे उसे अपनी life का हिस्सा बना लिया।</p>
+            </div>
+        </section>
+
+        <!-- Passion & Purpose Section -->
+        <section class="section">
+            <h2 class="section-title">My Passion & Purpose</h2>
+            <div class="image-container">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-18_23-41-39-582.jpg?updatedAt=1758219956081&ik-s=0bd9e5412f4086d18bca2af50da6a9bfc471563c" alt="Passion & Purpose">
+                <div class="image-frame"></div>
+            </div>
+            <div class="note-block">
+                <p>2019 में मैं एक e-sport player था, gaming ही मेरी ज़िंदगी थी। लेकिन एक accident ने मेरी life बदल दी और मेरी player journey वहीं खत्म हो गई।</p>
+                <p>तभी से मैंने तय किया कि अगर मैं खुद नहीं खेल सकता, तो दूसरों को मौका दूँगा।</p>
+                <p>इसलिए मैंने tournament hosting शुरू की – ताकि जिन खिलाड़ियों के पास पैसे नहीं हैं वो भी perform कर सकें और earn कर सकें।</p>
+                <p>👉 और इसमें हमारा कोई personal profit नहीं है, ये सिर्फ players के लिए है।</p>
+                <p><strong>My Vision:</strong> मेरा vision है कि मैं India का सबसे अच्छा tournament hoster बनूँ और हर खिलाड़ी को बराबर का मौका दे सकूँ।</p>
+            </div>
+        </section>
+
+        <!-- Journey Section -->
+        <section class="section">
+            <h2 class="section-title">My Journey</h2>
+            <div class="image-container">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-18_23-46-43-142.jpg?updatedAt=1758219955824&ik-s=868e7f46e8761f545958b18e213a7df861bc10da" alt="My Journey">
+                <div class="image-frame"></div>
+            </div>
+            <div class="note-block">
+                <p>मेरी journey 2020 से शुरू हुई, जब मैंने अपना पहला project बनाने का सोचा। उसके लिए मुझे web coding सीखनी पड़ी, जिसकी वजह से काफी समय लग गया।</p>
+                <p>इस दौरान मेरी सबसे बड़ी struggle रही – lack of time और lack of support। लेकिन मैंने कभी हार नहीं मानी।</p>
+                <p>मेरी पहली achievement थी जब मेरे परिवार ने मुझ पर भरोसा किया और मुझे पैसा व समय दिया ताकि मैं अपने passion पर काम कर सकूँ – tournament hosting।</p>
+            </div>
+            <button class="btn" id="sideIncomeBtn">Side Income ?</button>
+        </section>
+
+        <!-- Trading Section -->
+        <section class="section">
+            <div class="image-container">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-18_23-54-31-904.jpg?updatedAt=1758219956099&ik-s=54ed9f7f3f53c5a8246779bcfec416b1ad57161e" alt="Trading">
+                <div class="image-frame"></div>
+            </div>
+            <div class="note-block">
+                <p>मैं मानता हूँ कि ज़िंदगी में आगे बढ़ने के लिए सिर्फ सपने देखना काफी नहीं, बल्कि मेहनत करना और दूसरों के लिए कुछ करना भी ज़रूरी है।</p>
+                <p>मेरे लिए tournament सिर्फ game नहीं है – ये players के लिए एक नया मौका और एक नई उम्मीद है।</p>
+            </div>
+        </section>
+
+        <!-- Instagram Section -->
+        <section class="section">
+            <div class="image-container">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-18_22-50-11-848.jpg?updatedAt=1758219981179&ik-s=35d9b4c777129345625654212b417c50d3f49014" alt="Instagram">
+                <div class="image-frame"></div>
+            </div>
+            <a href="https://www.instagram.com/rajmalik_99?igsh=NHhxbXk5bWxudTlw" class="social-logo">
+                <i class="fab fa-instagram fa-3x" style="color: #E4405F;"></i>
+            </a>
+        </section>
+
+        <!-- Investor Section -->
+        <section class="section">
+            <div class="image-container">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-18_02-49-16-996.jpg?updatedAt=1758210646096&ik-s=27b563dd19b086b5a19cb5c89f8b3c2253c469e6" alt="Our Investors">
+                <div class="image-frame"></div>
+            </div>
+        </section>
+
+        <!-- Special Group Section -->
+        <section class="section">
+            <div class="special-group">
+                <h2>Log In and Get Your Special Group</h2>
+                <p>Join our exclusive community of gamers and tournament enthusiasts</p>
+                <a href="login.html" class="btn btn-secondary">Log In Now</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-social">
+                <a href="https://www.instagram.com/silent.gamers?igsh=MWN6bGdsdzhyb3Nicw==" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://youtube.com/@silentgaminghub1?si=I5kKezgts9brivCW" class="social-icon">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            <div class="footer-text">
+                <p>&copy; 2025 Silent Gamers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Side Income Modal -->
+    <div class="modal-overlay" id="sideIncomeModal">
+        <div class="modal-content">
+            <div class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </div>
+            <h3 class="modal-title">Professional Side</h3>
+            <div class="modal-text">
+                <p>Gaming और tournament hosting के साथ-साथ मैं trading भी करता हूँ। लेकिन मैं उस तरह का trader नहीं हूँ जो courses बेचता है या Instagram पर show-off करता है।</p>
+                <p>ये मेरे लिए सिर्फ एक side income source है, main focus हमेशा gaming और tournaments पर ही रहेगा।</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Menu Toggle (toggle behavior) + Escape to close both menu & modal
+        (function() {
+            const menuOverlay = document.querySelector('.menu-overlay');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menuClose = document.querySelector('.menu-close');
+            const menuLinks = document.querySelectorAll('.menu-items a');
+            const sideIncomeModal = document.getElementById('sideIncomeModal');
+            
+            function openMenu() {
+                menuOverlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeMenu() {
+                menuOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Toggle on menu icon
+            menuToggle.addEventListener('click', function() {
+                if (menuOverlay.style.display === 'block') closeMenu();
+                else openMenu();
+            });
+            
+            // Close button inside menu
+            menuClose.addEventListener('click', closeMenu);
+            
+            // Close menu when clicking any menu link
+            menuLinks.forEach(function(link) {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            // ESC key close for both menu and modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    // close menu if open
+                    if (menuOverlay.style.display === 'block') closeMenu();
+                    
+                    // close modal if active
+                    if (sideIncomeModal && sideIncomeModal.classList.contains('active')) {
+                        sideIncomeModal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                }
+            });
+        })();
+        
+        // Side Income Modal
+        document.getElementById('sideIncomeBtn').addEventListener('click', function() {
+            document.getElementById('sideIncomeModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        document.getElementById('modalClose').addEventListener('click', function() {
+            document.getElementById('sideIncomeModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close modal when clicking outside
+        document.getElementById('sideIncomeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
