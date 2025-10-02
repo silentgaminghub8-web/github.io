@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Silent Gamers COO Page - Meet Aakarsh Tomar, partner of Ujjwal Malik. Exclusive access, tournaments, and esports updates.">
+    <title>COO - Silent Gamers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&family=Montserrat:wght@800&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: 'Georgia', serif;
+            background-color: #FFFFFF;
+            color: #1C1C1C;
+            line-height: 1.6;
+            touch-action: pan-y;
+            position: relative;
+        }
+        
+        /* Prevent zooming */
+        body {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #1C1C1C;
+            color: #FFFFFF;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .header-left {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+        }
+        
+        .header-center {
+            flex: 2;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .header-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.7);
+        }
+        
+        .logo:hover {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+            transform: scale(1.05);
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .site-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: #FFFFFF;
+            text-shadow: 0 0 5px #FF6600;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-btn {
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-btn:hover {
+            color: #FF6600;
+        }
+        
+        /* Menu Styles */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .menu-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: calc(60px + 20px) 20px 20px;
+            overflow-y: auto;
+            animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .menu-close {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-close:hover {
+            color: #FF6600;
+        }
+        
+        .menu-items {
+            list-style: none;
+            margin-top: 40px;
+        }
+        
+        .menu-item {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeInLeft 0.5s ease forwards;
+        }
+        
+        .menu-item a {
+            display: block;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 12px 15px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item a:hover {
+            color: #FF6600;
+            border-left: 3px solid #FF6600;
+            background: rgba(255, 102, 0, 0.1);
+        }
+        
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: #000000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #FF6600, #FFD700);
+        }
+        
+        .coo-logo {
+            display: block;
+            margin: 0 auto 30px;
+            max-width: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), 0 0 20px rgba(255, 102, 0, 0.3);
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+        }
+        
+        .coo-logo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .headline {
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            color: #000000;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+        }
+        
+        .note {
+            text-align: center;
+            margin-bottom: 40px;
+            font-style: italic;
+            color: #FF6600;
+            font-size: 1.2rem;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.6s both;
+        }
+        
+        .photo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
+        }
+        
+        .photo {
+            max-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15), 0 0 20px rgba(255, 102, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .photo:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 102, 0, 0.5);
+        }
+        
+        .photo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .photo:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-image: linear-gradient(45deg, #FF6600, #FFD700) 1;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+        
+        .autobiography {
+            background-color: #F4F4F6;
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #FF6600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1s both;
+        }
+        
+        .autobiography p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .autobiography .highlight {
+            color: #FF6600;
+            font-weight: bold;
+        }
+        
+        .special-note-container {
+            text-align: center;
+            margin: 60px 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.2s both;
+        }
+        
+        .special-note {
+            background: linear-gradient(135deg, #FF6600, #FFD700);
+            color: #FFFFFF;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 102, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .special-note:hover {
+            animation: pulse 2s infinite;
+        }
+        
+        .special-note:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 10s linear infinite;
+        }
+        
+        .special-note h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .special-note p {
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .special-note .btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: #000000;
+            color: #FF6600;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid #FFD700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .special-note .btn:hover {
+            background: linear-gradient(to right, #FF6600, #FF4500);
+            color: #FFFFFF;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: #000000;
+            color: #FFFFFF;
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 3px solid #FFD700;
+        }
+        
+        .social-logos {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .social-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .instagram {
+            background: #FF6600;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.7);
+        }
+        
+        .youtube {
+            background: #FFFFFF;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.7);
+        }
+        
+        .social-logo:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+        }
+        
+        .instagram:hover {
+            background: linear-gradient(45deg, #FF6600, #FFD700);
+        }
+        
+        .youtube:hover {
+            background: linear-gradient(45deg, #FF6600, #FF4500);
+        }
+        
+        .social-logo img {
+            width: 60%;
+            height: auto;
+        }
+        
+        .youtube img {
+            /* Removed filter property */
+        }
+        
+        .youtube:hover img {
+            filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #CCCCCC;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 10px 30px rgba(255, 102, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 40px rgba(255, 102, 0, 0.7);
+            }
+            100% {
+                box-shadow: 0 10px 30px rgba(255, 102, 0, 0.4);
+            }
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .headline {
+                font-size: 1.6rem;
+            }
+            
+            .special-note h3 {
+                font-size: 1.5rem;
+            }
+            
+            .special-note p {
+                font-size: 1rem;
+            }
+            
+            .autobiography {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.6rem;
+            }
+            
+            .headline {
+                font-size: 1.4rem;
+            }
+            
+            .special-note {
+                padding: 20px;
+            }
+            
+            .special-note h3 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <a href="index.html" class="logo">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png?updatedAt=1758480146212&ik-s=4f744f417100daea8710c3389638e583c2987985" alt="Silent Gamers Logo">
+            </a>
+        </div>
+        <div class="header-center">
+            <h1 class="site-title">SILENT GAMERS</h1>
+        </div>
+        <div class="header-right">
+            <button class="menu-btn" aria-label="Open Menu">☰</button>
+        </div>
+    </header>
+    
+    <!-- Menu Overlay -->
+    <div class="menu-overlay">
+        <div class="menu-content">
+            <button class="menu-close">×</button>
+            <ul class="menu-items">
+                <li class="menu-item" style="animation-delay: 0.1s"><a href="index.html">Home</a></li>
+                <li class="menu-item" style="animation-delay: 0.2s"><a href="signup.html">Sign Up</a></li>
+                <li class="menu-item" style="animation-delay: 0.3s"><a href="main.html">Log In</a></li>
+                <li class="menu-item" style="animation-delay: 0.4s"><a href="ceo.html">CEO</a></li>
+                <li class="menu-item" style="animation-delay: 0.5s"><a href="coo.html">COO</a></li>
+                <li class="menu-item" style="animation-delay: 0.6s"><a href="boo.html">Anti-Hacker</a></li>
+                <li class="menu-item" style="animation-delay: 0.7s"><a href="roshi.html">Tournament Management</a></li>
+                <li class="menu-item" style="animation-delay: 0.8s"><a href="yt.html">YouTube Policy</a></li>
+                <li class="menu-item" style="animation-delay: 0.9s"><a href="policy.html">Privacy Policy</a></li>
+                <li class="menu-item" style="animation-delay: 1.0s"><a href="calculate.html">Prizepool Calculator</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="page-title">COO</h1>
+        
+        <div class="coo-logo">
+            <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-08-50-059.png?updatedAt=1758480147249&ik-s=e6f0f6cba9400af3e85c492cd83c0fdff24c609a" alt="COO Logo">
+        </div>
+        
+        <h2 class="headline">Who I Am?</h2>
+        
+        <p class="note"> aakarsh tomar partner of ujjwal malik.</p>
+        
+        <div class="photo-container">
+            <div class="photo">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-20_09-27-26-571.jpg?updatedAt=1758341036221&ik-s=0fded4f1814fae7f09e4a2f19867df8b1b7e2c5d" alt="COO Photo">
+            </div>
+        </div>
+        
+        <div class="autobiography">
+            <p>Hii I am Aakarsh Tomar, friend of Ujjwal.</p>
+            <p><span class="highlight">Qualification:</span> Graduated, ITI</p>
+            <p><span class="highlight">Hobby:</span> playing games and riding bike .</p>
+        </div>
+        
+        <div class="photo-container">
+            <div class="photo">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-10-01_20-35-39-254.jpg?updatedAt=1759331165201&ik-s=95584a3679028cfecbcb004729dfaac684da9f21" alt="Investors Photo">
+            </div>
+        </div>
+        
+        <div class="special-note-container">
+            <div class="special-note">
+                <h3>Exclusive Access</h3>
+                <p>Log in and get your special group membership with premium benefits!</p>
+                <a href="login.html" class="btn">Log In Now</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="social-logos">
+            <a href="https://www.instagram.com/silent.gamers?igsh=MWN6bGdsdzhyb3Nicw==" class="social-logo instagram">
+                <!-- Instagram SVG -->
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="#FFFFFF" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+            <a href="https://youtube.com/@silentgaminghub1?si=I5kKezgts9brivCW" class="social-logo youtube">
+                <!-- YouTube SVG -->
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="#FF0000" d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+            </a>
+        </div>
+        <p class="copyright">&copy; 2025 Silent Gamers. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // Menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.querySelector('.menu-btn');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            const menuClose = document.querySelector('.menu-close');
+            
+            menuBtn.addEventListener('click', function() {
+                menuOverlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            menuClose.addEventListener('click', function() {
+                menuOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Close menu when clicking outside content
+            menuOverlay.addEventListener('click', function(e) {
+                if (e.target === menuOverlay) {
+                    menuOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Prevent zooming with pinch gestures
+            document.addEventListener('gesturestart', function(e) {
+                e.preventDefault();
+            });
+            
+            document.addEventListener('gesturechange', function(e) {
+                e.preventDefault();
+            });
+            
+            document.addEventListener('gestureend', function(e) {
+                e.preventDefault();
+            });
+            
+            // Disable double-tap to zoom
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        });
+    </script>
+</body>
+</html>
