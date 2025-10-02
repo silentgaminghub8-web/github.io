@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SILENT GAMERS - E-Sports Tournament</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Montserrat:wght@800;900&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --orange: #FF6600;
+            --gold: #FFD700;
+            --darkGrey: #1C1C1C;
+            --lightGrey: #F4F4F6;
+            --warmRed: #FF4500;
+            --platinum: #E5E4E2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background-color: var(--white);
+            color: var(--darkGrey);
+            line-height: 1.6;
+            touch-action: pan-y;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        body {
+            position: relative;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: pageLoad 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            overflow-y: auto;
+        }
+        
+        @keyframes pageLoad {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Header Styles */
+        header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background-color: var(--darkGrey);
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            padding: 15px 5%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 5px var(--orange));
+        }
+        
+        .logo:hover {
+            filter: drop-shadow(0 0 8px var(--gold));
+        }
+        
+        .title-container {
+            text-align: center;
+        }
+        
+        .title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--white);
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px var(--orange);
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            position: relative;
+            z-index: 1001;
+        }
+        
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--white);
+            margin: 2px 0;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(4px, 4px);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+        
+        .menu-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .menu li {
+            margin-left: 25px;
+        }
+        
+        .menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .menu a:hover {
+            color: var(--orange);
+        }
+        
+        .menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--gold);
+            transition: width 0.3s ease;
+        }
+        
+        .menu a:hover::after {
+            width: 100%;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.97);
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s ease, opacity 0.3s;
+            transform: translateX(-100%);
+            opacity: 0;
+            overflow-y: auto;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .mobile-menu ul {
+            list-style: none;
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .mobile-menu li {
+            margin: 18px 0;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        .mobile-menu.active li {
+            animation: slideInLeft 0.5s ease forwards;
+        }
+        
+        .mobile-menu li:nth-child(1) { animation-delay: 0.1s; }
+        .mobile-menu li:nth-child(2) { animation-delay: 0.2s; }
+        .mobile-menu li:nth-child(3) { animation-delay: 0.3s; }
+        .mobile-menu li:nth-child(4) { animation-delay: 0.4s; }
+        .mobile-menu li:nth-child(5) { animation-delay: 0.5s; }
+        .mobile-menu li:nth-child(6) { animation-delay: 0.6s; }
+        .mobile-menu li:nth-child(7) { animation-delay: 0.7s; }
+        .mobile-menu li:nth-child(8) { animation-delay: 0.8s; }
+        .mobile-menu li:nth-child(9) { animation-delay: 0.9s; }
+        .mobile-menu li:nth-child(10) { animation-delay: 1.0s; }
+        
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .mobile-menu a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: block;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-menu a:hover {
+            color: var(--orange);
+        }
+        
+        .close-menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            background: rgba(255, 102, 0, 0.2);
+            border-radius: 50%;
+            padding: 5px;
+        }
+        
+        .close-menu span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--white);
+            position: absolute;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+        
+        .close-menu span:first-child {
+            transform: rotate(45deg);
+        }
+        
+        .close-menu span:last-child {
+            transform: rotate(-45deg);
+        }
+        
+        .close-menu:hover {
+            background: rgba(255, 102, 0, 0.4);
+        }
+        
+        .close-menu:hover span {
+            background-color: var(--orange);
+        }
+        
+        /* Main Content */
+        main {
+            padding: 40px 5%;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        section {
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--black);
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--orange), var(--gold));
+        }
+        
+        .content-image {
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35), 0 0 30px rgba(255, 102, 0, 0.25);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-image: linear-gradient(45deg, var(--orange), var(--gold)) 1;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .content-image:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 102, 0, 0.4);
+        }
+        
+        .note-block {
+            background-color: var(--lightGrey);
+            padding: 25px;
+            border-left: 5px solid var(--orange);
+            margin: 30px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .note-block p {
+            font-size: 1.1rem;
+            color: #111;
+            margin-bottom: 15px;
+        }
+        
+        .note-block p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .highlight {
+            color: var(--orange);
+            font-weight: bold;
+        }
+        
+        /* Timer Section */
+        .timer-container {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--darkGrey), var(--black));
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .timer-title {
+            font-family: 'Poppins', sans-serif;
+            color: var(--white);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .timer-unit {
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 10px;
+            min-width: 100px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timer-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--orange);
+            line-height: 1;
+        }
+        
+        .timer-label {
+            font-size: 1rem;
+            color: var(--darkGrey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+        
+        /* Special Group Section */
+        .special-group {
+            text-align: center;
+            padding: 60px 5%;
+            background: linear-gradient(135deg, var(--orange), var(--warmRed));
+            color: var(--white);
+            border-radius: 15px;
+            margin: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .special-group::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s infinite linear;
+        }
+        
+        @keyframes pulse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .special-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .special-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .special-button {
+            display: inline-block;
+            background-color: var(--black);
+            color: var(--orange);
+            padding: 15px 40px;
+            border: 2px solid var(--gold);
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+        
+        .special-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .special-button:hover {
+            background: linear-gradient(to right, var(--orange), var(--warmRed));
+            color: var(--white);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        .special-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 3px solid var(--gold);
+        }
+        
+        .social-logos {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .social-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .instagram {
+            background-color: var(--orange);
+            box-shadow: 0 0 10px var(--orange);
+        }
+        
+        .youtube {
+            background-color: #FF0000;
+            box-shadow: 0 0 10px #FF0000;
+        }
+        
+        .social-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--gold);
+        }
+        
+        .social-logo img {
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+        }
+        
+        .youtube svg {
+            fill: #fff;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--platinum);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .menu li {
+                margin-left: 15px;
+            }
+            
+            .menu a {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .menu-container {
+                display: none;
+            }
+            
+            .title {
+                font-size: 1.3rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .special-title {
+                font-size: 2.2rem;
+            }
+            
+            .special-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .timer-value {
+                font-size: 2.5rem;
+            }
+            
+            .timer-unit {
+                min-width: 80px;
+                padding: 10px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 5%;
+            }
+            
+            .logo {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .title {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .special-title {
+                font-size: 1.8rem;
+            }
+            
+            .special-subtitle {
+                font-size: 1rem;
+            }
+            
+            .timer {
+                gap: 10px;
+            }
+            
+            .timer-unit {
+                min-width: 70px;
+                padding: 8px 12px;
+            }
+            
+            .timer-value {
+                font-size: 2rem;
+            }
+            
+            .special-button {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            
+            .mobile-menu a {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-22_00-09-34-964.png?updatedAt=1758480146212&ik-s=4f744f417100daea8710c3389638e583c2987985" alt="Silent Gamers Logo" class="logo">
+            </a>
+        </div>
+        
+        <div class="title-container">
+            <h1 class="title">SILENT GAMERS</h1>
+        </div>
+        
+        <div class="menu-toggle" id="menuToggle" aria-label="Open Menu" role="button" tabindex="0">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="menu-container">
+            <ul class="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="signin.html">Sign Up</a></li>
+                <li><a href="main.html">Log In</a></li>
+                <li><a href="ceo.html">CEO</a></li>
+                <li><a href="coo.html">COO</a></li>
+                <li><a href="boo.html">Anti-Hacker</a></li>
+                <li><a href="roshi.html">Tournament Management</a></li>
+                <li><a href="yt.html">YouTube Policy</a></li>
+                <li><a href="policy.html">Privacy Policy</a></li>
+                <li><a href="calculate.html">Prizepool Calculator</a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="close-menu" id="closeMenu">
+            <span></span>
+            <span></span>
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="signin.html">Sign Up</a></li>
+            <li><a href="main.html">Log In</a></li>
+            <li><a href="ceo.html">CEO</a></li>
+            <li><a href="coo.html">COO</a></li>
+            <li><a href="boo.html">Anti-Hacker</a></li>
+            <li><a href="roshi.html">Tournament Management</a></li>
+            <li><a href="yt.html">YouTube Policy</a></li>
+            <li><a href="policy.html">Privacy Policy</a></li>
+            <li><a href="calculate.html">Prizepool Calculator</a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <main>
+        <!-- E-Sports Section -->
+        <section>
+            <h2 class="section-title">E-Sports</h2>
+            <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-23_17-01-22-162.png?updatedAt=1758658117445&ik-s=685b4078dccb42ddaba2388124b266eb754648d9" alt="E-Sports Banner" class="content-image">
+            
+            <div class="note-block">
+                <p>Free Fire E-Sport begins on <span class="highlight">1 January 2026</span>.</p>
+                <p>Every month, we will organize Special Tournaments only for our E-Sport Members.</p>
+            </div>
+        </section>
+        
+        <!-- Schedule Section -->
+        <section>
+            <h2 class="section-title">🎮 Tournament & Training Schedule</h2>
+            
+            <div class="note-block">
+                <p><span class="highlight">Jan – May 2026</span> → 5 Special Tournaments</p>
+                <p><span class="highlight">June – August 2026</span> → 3 Months Professional Training Camp</p>
+            </div>
+            
+            <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-18_02-49-16-996.jpg?updatedAt=1758210646096&ik-s=27b563dd19b086b5a19cb5c89f8b3c2253c469e6" alt="Training Camp" class="content-image">
+            
+            <div class="note-block">
+                <p>🔥 <span class="highlight">Golden Opportunity (After August)</span></p>
+                <p>You also get a chance to Replace our Existing Members and become an Official E-Sport Player.</p>
+                <p>👉 <span class="highlight">Process:</span> If you can 1v2 our Players, you will directly join as our New Member.</p>
+            </div>
+        </section>
+        
+        <!-- Special Gifts Section -->
+        <section>
+            <h2 class="section-title">E-sport Members Special Gifts</h2>
+            
+            <div class="note-block">
+                <p>🎁 <span class="highlight">Free Facilities for Our E-Sport Players</span></p>
+                <p>📱 Latest iPhone Pro Model</p>
+                <p>🌐 Home WiFi Connection</p>
+                <p>🎟 Free Entry in Tournaments (worth up to ₹2,00,000)</p>
+                <p>👕 Official Brand T-Shirt</p>
+                <p>🎫 Elite Pass</p>
+                <p>🏆 Participation in Big National Offline Tournaments</p>
+            </div>
+            
+            <img src="https://ik.imagekit.io/silentgamers/Picsart_25-09-23_17-10-38-006.jpg?updatedAt=1758658117541&ik-s=b0b4c7bd16b8ef8a3d353cc27f5939bcdae9276b" alt="Special Gifts" class="content-image">
+        </section>
+        
+        <!-- Countdown Timer -->
+        <section>
+            <div class="timer-container">
+                <h2 class="timer-title">Countdown to E-Sports Launch</h2>
+                <div class="timer">
+                    <div class="timer-unit">
+                        <div class="timer-value" id="days">00</div>
+                        <div class="timer-label">Days</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="hours">00</div>
+                        <div class="timer-label">Hours</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="minutes">00</div>
+                        <div class="timer-label">Minutes</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="seconds">00</div>
+                        <div class="timer-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="note-block">
+                <p>This is not just a tournament, it's a path to become a Pro E-Sport Athlete with full support and premium facilities.</p>
+            </div>
+        </section>
+        
+        <!-- Special Group Section -->
+        <section class="special-group">
+            <h2 class="special-title">Log In and Get Your Special Group</h2>
+            <p class="special-subtitle">Join our exclusive E-Sports community today!</p>
+            <a href="main.html" class="special-button">Log In Now</a>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="social-logos">
+            <a href="https://www.instagram.com/silent.gamers?igsh=MWN6bGdsdzhyb3Nicw==" class="social-logo instagram">
+                <!-- Instagram Icon -->
+                <svg viewBox="0 0 24 24" fill="white" width="24" height="24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+            <a href="https://youtube.com/@silentgaminghub1?si=I5kKezgts9brivCW" class="social-logo youtube">
+                <!-- YouTube Icon -->
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+            </a>
+        </div>
+        
+        <p class="copyright">&copy; 2025 SILENT GAMERS. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMenu = document.getElementById('closeMenu');
+            
+            // Check if elements exist before adding event listeners
+            if (menuToggle && mobileMenu && closeMenu) {
+                // Add click event to menu toggle
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    mobileMenu.classList.add('active');
+                    menuToggle.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+                
+                // Add click event to close menu button
+                closeMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    mobileMenu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+                
+                // Close menu when clicking on a link
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.remove('active');
+                        menuToggle.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    });
+                });
+                
+                // Close menu when clicking outside of it
+                document.addEventListener('click', function(e) {
+                    if (mobileMenu.classList.contains('active') && 
+                        !mobileMenu.contains(e.target) && 
+                        !menuToggle.contains(e.target)) {
+                        mobileMenu.classList.remove('active');
+                        menuToggle.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+            
+            // Countdown Timer
+            function updateCountdown() {
+                const targetDate = new Date('January 1, 2026 00:00:00').getTime();
+                const now = new Date().getTime();
+                const timeLeft = targetDate - now;
+                
+                if (timeLeft < 0) {
+                    document.getElementById('days').textContent = '00';
+                    document.getElementById('hours').textContent = '00';
+                    document.getElementById('minutes').textContent = '00';
+                    document.getElementById('seconds').textContent = '00';
+                    return;
+                }
+                
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            // Initialize countdown and update every second
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // Improved zoom prevention
+            document.addEventListener('touchstart', function(event) {
+                if (event.touches.length > 1) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+            
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // Ensure scrolling works on touch devices
+            document.addEventListener('touchmove', function(event) {
+                // Allow scrolling if it's a single touch
+                if (event.touches.length === 1) {
+                    return;
+                }
+                // Prevent zooming with multiple touches
+                if (event.touches.length > 1) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+            
+            // Staggered animation for sections
+            const sections = document.querySelectorAll('section');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationDelay = '0.2s';
+                        entry.target.style.animation = 'fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
