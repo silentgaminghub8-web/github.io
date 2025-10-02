@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SILENT GAMERS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        body {
+            background-color: #000;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Background with subtle particles */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.6) 0%, rgba(255,140,0,0.4) 100%);
+            animation: float 20s infinite linear;
+        }
+
+        .particle.pulse {
+            animation: float 20s infinite linear, pulse 4s infinite alternate;
+        }
+
+        /* Header styling */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeIn 1.5s forwards 0.5s;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .headline {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(to right, #ffd700, #ff8c00, #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            position: relative;
+            padding: 10px 20px;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        .shimmer {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        /* Container for buttons with box behind */
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 30px;
+            background: rgba(10, 10, 10, 0.9);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.4);
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(5px);
+        }
+
+        .signup-note {
+            text-align: center;
+            color: #ffd700;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Button styling */
+        .magic-button {
+            position: relative;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(30, 30, 30, 0.9));
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            color: #ffd700;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: calc(0.3s * var(--i));
+            user-select: none;
+        }
+
+        .magic-button:nth-child(1) { --i: 1; }
+        .magic-button:nth-child(2) { --i: 2; }
+        .magic-button:nth-child(3) { --i: 3; }
+        .magic-button:nth-child(4) { --i: 4; }
+
+        .magic-button:hover,
+        .magic-button:active {
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+            color: #ff8c00;
+            border-color: #ff8c00;
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(50, 50, 50, 0.9));
+        }
+
+        .magic-button.signup {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(30, 30, 30, 0.9));
+            border: 2px solid #00ffcc;
+            color: #00ffcc;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+
+        .magic-button.signup:hover,
+        .magic-button.signup:active {
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
+            color: #00ffaa;
+            border-color: #00ffaa;
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(50, 50, 50, 0.9));
+        }
+
+        /* Simple ripple effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,215,0,0.6) 0%, transparent 70%);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        .ripple.signup {
+            background: radial-gradient(circle, rgba(0,255,204,0.6) 0%, transparent 70%);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1.5s;
+            width: 100%;
+            max-width: 400px;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            50% {
+                left: 100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            50% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 15px rgba(255, 140, 0, 0.8);
+            }
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        /* Loading screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-text {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            letter-spacing: 2px;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(45deg, #ffd700 25%, #ff8c00 25%, #ff8c00 50%, #ffd700 50%, #ffd700 75%, #ff8c00 75%);
+            background-size: 20px 20px;
+            border-radius: 2px;
+            animation: loading 2s ease-in-out forwards, stripes 1s linear infinite;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes stripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 0; }
+        }
+
+        /* Enhanced mobile styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                justify-content: flex-start;
+                padding-top: 40px;
+            }
+            
+            .buttons-container {
+                padding: 25px 20px;
+                gap: 15px;
+            }
+            
+            .magic-button {
+                height: 60px;
+                font-size: 1rem;
+            }
+            
+            .footer {
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                margin-bottom: 20px;
+            }
+            
+            .buttons-container {
+                padding: 20px 15px;
+            }
+            
+            .magic-button {
+                height: 55px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Landscape orientation fix */
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            
+            .header {
+                margin-bottom: 15px;
+            }
+            
+            .headline {
+                font-size: 2rem;
+            }
+            
+            .buttons-container {
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            .magic-button {
+                height: 45px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="headline">SILENT GAMERS</div>
+        <div class="loading-text">LOADING</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <div class="background" id="background"></div>
+    
+    <header class="header">
+        <h1 class="headline">
+            SILENT GAMERS
+            <span class="shimmer"></span>
+        </h1>
+    </header>
+    
+    <div class="buttons-container">
+        <a href="profile.html" class="magic-button" aria-label="Open Profile Dashboard">Profile Dashboard</a>
+        <a href="tournament.html" class="magic-button" aria-label="View All Tournaments">All Tournaments</a>
+        <a href="link.html" class="magic-button" aria-label="Access Start Links">Start Links</a>
+        <div class="signup-note">Get your ID and Pass here</div>
+        <a href="signin.html" class="magic-button signup" aria-label="Sign Up for SILENT GAMERS">Sign Up</a>
+    </div>
+
+    <div class="footer">
+        © 2025 SILENT GAMERS | Enter the Arena
+    </div>
+
+    <script>
+        // Prevent zoom on double-tap
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
+        // Prevent zoom on double-click
+        document.addEventListener('dblclick', function(event) {
+            event.preventDefault();
+        }, { passive: false });
+
+        // Create simplified background particles
+        const background = document.getElementById('background');
+        
+        // Create floating particles with varying sizes
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random properties
+            const size = Math.random() * 4 + 2; // 2px to 6px
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            const delay = Math.random() * 15;
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${left}%`;
+            particle.style.top = `${top}%`;
+            particle.style.animationDelay = `${delay}s`;
+            
+            // Add pulse animation to some particles
+            if (Math.random() > 0.7) {
+                particle.classList.add('pulse');
+            }
+            
+            background.appendChild(particle);
+        }
+        
+        // Create ripple effect on button click
+        const buttons = document.querySelectorAll('.magic-button');
+        
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const ripple = document.createElement('div');
+                ripple.classList.add('ripple');
+                
+                if (this.classList.contains('signup')) {
+                    ripple.classList.add('signup');
+                }
+                
+                const rect = this.getBoundingClientRect();
+                let x, y;
+                
+                if (e.touches && e.touches[0]) {
+                    // For touch events
+                    x = e.touches[0].clientX - rect.left;
+                    y = e.touches[0].clientY - rect.top;
+                } else {
+                    // For mouse events
+                    x = e.clientX - rect.left;
+                    y = e.clientY - rect.top;
+                }
+                
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                this.appendChild(ripple);
+                
+                // Remove ripple after animation
+                setTimeout(() => {
+                    if (ripple.parentNode) {
+                        ripple.parentNode.removeChild(ripple);
+                    }
+                }, 600);
+                
+                // Redirect after animation
+                setTimeout(() => {
+                    window.location.href = this.getAttribute('href');
+                }, 400);
+            });
+            
+            // Add touch event for mobile
+            button.addEventListener('touchstart', function(e) {
+                this.style.transform = 'scale(0.98)';
+            });
+            
+            button.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Handle loading screen
+        const loadingScreen = document.getElementById('loadingScreen');
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 2000);
+        });
+
+        // Fallback in case page takes too long to load
+        setTimeout(() => {
+            if (loadingScreen.style.display !== 'none') {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }, 4000);
+    </script>
+</body>
+</html>
