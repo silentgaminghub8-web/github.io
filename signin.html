@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Gamers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a0f00 0%, #000 70%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .loader-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .orbital-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            border-top: 2px solid #FF8C00;
+            border-right: 2px solid #FFD700;
+            animation: spin 3s linear infinite;
+        }
+        
+        .orbital-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            border-top: 2px solid #FFD700;
+            border-right: 2px solid #FF8C00;
+            animation: spin 2s linear infinite reverse;
+        }
+        
+        .orbital-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            border-top: 2px solid #FF8C00;
+            border-right: 2px solid #FFD700;
+            animation: spin 1.5s linear infinite;
+        }
+        
+        .center-logo {
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #FF8C00, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+        }
+        
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #FF8C00;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+            background: #FFA500;
+        }
+        
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+            background: #FFD700;
+        }
+        
+        .progress-container {
+            width: 300px;
+            margin-top: 30px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: #FFA500;
+            letter-spacing: 1px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 140, 0, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #FF8C00, #FFD700);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #FF8C00;
+            opacity: 0;
+        }
+        
+        .particle.gold {
+            background: #FFD700;
+        }
+        
+        #preview-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: 1;
+        }
+        
+        #preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Import Orbitron font for gaming feel */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-container">
+            <div class="orbital-ring"></div>
+            <div class="orbital-ring"></div>
+            <div class="orbital-ring"></div>
+            
+            <div class="center-logo">
+                <div class="logo-text">SILENT GAMERS</div>
+                <div class="loading-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-text">LOADING GAME INTERFACE</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+        
+        <div class="floating-particles" id="floating-particles"></div>
+    </div>
+    
+    <!-- Preview Container -->
+    <div id="preview-container">
+        <iframe id="preview-frame" src="https://script.google.com/macros/s/AKfycbyb5QXtgnLEV6DJt5MNf1lCzfIz0I2SyFVi6aIkP_XsjvtmFlcrn-vXgUXMxeuyZyNu/exec"></iframe>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            const previewContainer = document.getElementById('preview-container');
+            const progressFill = document.getElementById('progress-fill');
+            const particlesContainer = document.getElementById('floating-particles');
+            
+            // Create floating particles
+            function createParticles() {
+                const particleCount = 30;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = `particle ${Math.random() > 0.5 ? 'gold' : ''}`;
+                    
+                    // Random position
+                    particle.style.left = Math.random() * 100 + 'vw';
+                    particle.style.top = Math.random() * 100 + 'vh';
+                    
+                    // Random size
+                    const size = 2 + Math.random() * 4;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    
+                    // Random animation
+                    const duration = 3 + Math.random() * 4;
+                    const delay = Math.random() * 5;
+                    particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                    
+                    particlesContainer.appendChild(particle);
+                    
+                    // Fade in
+                    setTimeout(() => {
+                        particle.style.opacity = 0.3 + Math.random() * 0.5;
+                        particle.style.transition = 'opacity 1s ease';
+                    }, 100);
+                }
+            }
+            
+            // Start the loading sequence
+            setTimeout(() => {
+                createParticles();
+                
+                // Update progress bar
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 1;
+                    progressFill.style.width = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        
+                        // Brief pause to show completed loading
+                        setTimeout(() => {
+                            // Add fade out animation to loading screen
+                            loadingScreen.style.opacity = '0';
+                            loadingScreen.style.transition = 'opacity 1s ease-in-out';
+                            
+                            // Show preview after fade out
+                            setTimeout(() => {
+                                loadingScreen.style.display = 'none';
+                                previewContainer.style.opacity = '1';
+                            }, 1000);
+                        }, 800);
+                    }
+                }, 30);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
